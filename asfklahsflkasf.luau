@@ -8995,38 +8995,6 @@ do --Funcs
     end
 end
 
-do -- Hooks
-    local fakeanim = _Instancenew("Animation")
-    fakeanim.AnimationId = "rbxassetid://0"
-
-    local visualizeshit = require(game.ReplicatedStorage.VisualizeModule)
-    local createtrailcloned = visualizeshit.createtrail
-
-
-    visualizeshit.createtrail = function(p1, p2, p3)
-        local originPos = p1.Position
-
-        local character = LocalPlayer.Character
-        local hrp   = character and character:FindFirstChild("HumanoidRootPart")
-        if not (character and hrp) then
-            return createtrailcloned(p1, p2, p3)  
-        end
-
-        if originPos then
-            local distance = (originPos - camera.CFrame.Position).Magnitude
-            if distance <= 15 then
-    
-            else
-                if Flags["BulletTracerEnemyEnabled"] then
-                    Utility.CreateTracer(p2,  originPos, Flags["BulletTracerColor1"], Options["BulletTracerColor1"].Transparency, Flags["BulletTracerWidth"], Flags["BulletTracerLifetime"], Flags["BulletTracerTexture"], Flags["BulletTracerTextureLength"], Flags["BulletTracerTextureSpeed"], Flags["BulletTracerFaceCamera"], Flags["BulletTracerLightEmission"], Flags["BulletTracerLightInfluence"], Flags["BulletTracerBrightness"], Flags["BulletTracerSecondBeam"], Flags["BulletTracerSecondBeamColor"], Options["BulletTracerSecondBeamColor"].Transparency)
-                end
-            end
-        end
-
-        return createtrailcloned(p1, p2, p3)
-    end
-end
-
 do  -- Signals !
     RunService.RenderStepped:Connect(function()
         if (_Tick()-Watermark["RefreshRate"]) >= 1 then
