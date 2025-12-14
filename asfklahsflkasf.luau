@@ -4988,35 +4988,22 @@ ThemeManager.BuiltInThemes = {
                     local CursorOutline = Drawing.new('Triangle');
                     CursorOutline.Thickness = 1;
                     CursorOutline.Filled = false;
-                    CursorOutline.Color = _Color3New(0, 0, 0);
     
                     local BoxFill = Drawing.new("Square")
                     BoxFill.Thickness = 1;
                     BoxFill.Filled = true;
-                    BoxFill.Color = _Color3New(0, 0, 0);
-                    BoxFill.Visible = true;
-                    BoxFill.Size = _Vector2New(6,6)
     
                     local BoxFill2 = Drawing.new("Square")
                     BoxFill2.Thickness = 1;
                     BoxFill2.Filled = true;
-                    BoxFill2.Color = _Color3New(0, 0, 0);
-                    BoxFill2.Visible = true;
-                    BoxFill2.Size = _Vector2New(10,4)
     
                     local BoxFill3 = Drawing.new("Square")
                     BoxFill3.Thickness = 1;
                     BoxFill3.Filled = true;
-                    BoxFill3.Color = _Color3New(0, 0, 0);
-                    BoxFill3.Visible = true;
-                    BoxFill3.Size = _Vector2New(4,5)
     
                     local BoxFill4 = Drawing.new("Square")
                     BoxFill4.Thickness = 1;
                     BoxFill4.Filled = true;
-                    BoxFill4.Color = _Color3New(0, 0, 0);
-                    BoxFill4.Visible = true;
-                    BoxFill4.Size = _Vector2New(4,4)
     
                     while Toggled and not Library.Unloaded do
                         InputService.MouseIconEnabled = false;
