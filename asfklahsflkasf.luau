@@ -9066,7 +9066,23 @@ do --Funcs
     end
 end
 
-
+local function hookmetamethod(object, metamethod, hook)
+    local mt = getrawmetatable(object) or {}
+    local OldMetaMethod = mt[metamethod]
+    if not OldMetaMethod then
+        error("metamethod not found")
+    end
+ 
+    setreadonly(mt, false)
+    mt[metamethod] = function(...)
+        return hook(OldMetaMethod, ...)
+    end
+    setreadonly(mt, true)
+    
+    return function()
+        return OldMetaMethod
+    end
+end
 
 do -- Hooks
     local fakeanim = _Instancenew("Animation")
