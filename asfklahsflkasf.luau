@@ -1,9 +1,3 @@
-warn'bitch'
-warn'1'
-warn'3'
-warn'3'
-warn'7'
-
 setfpscap(0)
 local UID = 0
 
@@ -5005,43 +4999,6 @@ ThemeManager.BuiltInThemes = {
                     BoxFill4.Thickness = 1;
                     BoxFill4.Filled = true;
     
-                    while Toggled and not Library.Unloaded do
-                        InputService.MouseIconEnabled = false;
-                        InputService.MouseBehavior = Enum.MouseBehavior.Default
-    
-                        local mPos = _GetMouseLocation(InputService);
-    
-                        Cursor.Color = Library.AccentColor;
-    
-                        BoxFill.Color = Library.AccentColor
-                        BoxFill.Position = mPos + _Vector2New(3,3)
-    
-                        BoxFill2.Color = Library.AccentColor
-                        BoxFill2.Position = mPos + _Vector2New(3,5)
-    
-                        BoxFill3.Color = Library.AccentColor
-                        BoxFill3.Position = mPos + _Vector2New(5,8)
-    
-                        BoxFill4.Color = Library.AccentColor
-                        BoxFill4.Position = mPos + _Vector2New(7,7)
-    
-                        local outerA = _Vector2New(mPos.X, mPos.Y)
-                        local outerB = _Vector2New(mPos.X + 16, mPos.Y + 6)
-                        local outerC = _Vector2New(mPos.X + 6, mPos.Y + 16)
-                        
-                        CursorOutline.PointA = outerA
-                        CursorOutline.PointB = outerB
-                        CursorOutline.PointC = outerC
-        
-                        local centroid = (outerA + outerB + outerC) / 3
-                
-                        Cursor.PointA = (centroid + (outerA - centroid) * 0.7)
-                        Cursor.PointB = (centroid + (outerB - centroid) * 0.7) + _Vector2New(2,1)
-                        Cursor.PointC = (centroid + (outerC - centroid) * 0.7) + _Vector2New(1,2)
-    
-                        RenderStepped:Wait();
-                    end;
-    
                     InputService.MouseIconEnabled = State;
                     InputService.MouseBehavior = State2
     
@@ -9050,24 +9007,6 @@ do --Funcs
                 end
             end
         end)
-    end
-end
-
-local function hookmetamethod(object, metamethod, hook)
-    local mt = getrawmetatable(object) or {}
-    local OldMetaMethod = mt[metamethod]
-    if not OldMetaMethod then
-        error("metamethod not found")
-    end
- 
-    setreadonly(mt, false)
-    mt[metamethod] = function(...)
-        return hook(OldMetaMethod, ...)
-    end
-    setreadonly(mt, true)
-    
-    return function()
-        return OldMetaMethod
     end
 end
 
