@@ -8998,24 +8998,7 @@ end
 do -- Hooks
     local fakeanim = _Instancenew("Animation")
     fakeanim.AnimationId = "rbxassetid://0"
-    
-    local oldIndex; oldIndex = hookmetamethod(game, "__index", function(self, k)
-        if k == "Velocity" and self.Parent == LocalPlayer.Character and Misc.fakehrp then
-            return oldIndex(Misc.fakehrp, k)
-        end
-        return oldIndex(self, k)
-    end)
-    local oldNIndex; oldNIndex = hookmetamethod(game, "__newindex", function(self, k, v)
-        if self == workspace.CurrentCamera and k == "CFrame" then
-            if Flags["Remove_Recoil"] and tostring(getcallingscript()) == "Client"  then
-                return
-            end
-        end
-        if Flags["Remove_Scope"] and self.Name == "Blur" and self.Parent.Name == "Scope" then
-            v = 0
-        end
-        return oldNIndex(self, k, v)
-    end)
+
     local visualizeshit = require(game.ReplicatedStorage.VisualizeModule)
     local createtrailcloned = visualizeshit.createtrail
 
