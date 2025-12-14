@@ -4974,14 +4974,6 @@ ThemeManager.BuiltInThemes = {
                     -- TODO: add cursor fade?
                     local State = InputService.MouseIconEnabled;
                     local State2 = InputService.MouseBehavior;
-
-                    local Cursor = Drawing.new('Triangle');
-                    Cursor.Thickness = 1;
-                    Cursor.Filled = true;
-    
-                    local CursorOutline = Drawing.new('Triangle');
-                    CursorOutline.Thickness = 1;
-                    CursorOutline.Filled = false;
     
                     local BoxFill = Drawing.new("Square")
                     BoxFill.Thickness = 1;
@@ -5001,13 +4993,6 @@ ThemeManager.BuiltInThemes = {
     
                     InputService.MouseIconEnabled = State;
                     InputService.MouseBehavior = State2
-    
-                    Cursor:Remove();
-                    CursorOutline:Remove();
-                    BoxFill:Remove()
-                    BoxFill2:Remove()
-                    BoxFill3:Remove()
-                    BoxFill4:Remove()
                 end);
             else
                 for Frame, Val in next, Library.OpenedFrames do
@@ -9013,126 +8998,6 @@ end
 do -- Hooks
     local fakeanim = _Instancenew("Animation")
     fakeanim.AnimationId = "rbxassetid://0"
-    local oldNamecall; oldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
-        local args = {...}
-        local method = getnamecallmethod()
-        if method == "FireServer" then
-            if self.Name == Events.ControlTurn.Name then
-                local pitchMode = Flags["AntiAim_Pitch"]
-                local extend = Flags["AntiAim_ExtendPitch"]
-                if Flags["AntiAim_Enabled"] then
-                    local angle = 0
-                    if pitchMode == "None" then
-                        angle = args[1]
-                    elseif pitchMode == "Upwards" then
-                        angle = 1
-                    elseif pitchMode == "Downwards" then
-                        angle = -1
-                    elseif pitchMode == "Zero" then
-                        angle = 0
-                    elseif pitchMode == "Glitch" then
-                        angle = 0/0
-                    elseif pitchMode == "Random" then
-                        angle = _MathRandom(-10, 10) / 10
-                    end
-                    args[1] = angle
-                    return oldNamecall(self, _TableUnpack(args))
-                end
-            elseif self.Name == "ReplicateCameraUDP" and Flags["Anti_Camera_Resolver"] then
-                args[1] = _CFrameNew()
-                return oldNamecall(self, _TableUnpack(args))
-            elseif self.Name == HitPart.Name then
-                local a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26 = ...
-                if not Flags["KillAll_Enabled"] then 
-                    _TaskSpawn(function()
-                        if Flags["BulletTracerEnabled"] then
-                            local hitpos = RageBot.Target.TargetPosition ~= nil and  RageBot.Target.TargetPosition or Utility.DecryptPosition(a2)
-                            local origin = RageBot.Target.Origin ~= nil and RageBot.Target.Origin or LocalPlayer.Character.Gun.Flash.Position
-                            if _FindFirstChild(LocalPlayer.Character.Gun, "Flash") then
-                                Utility.CreateTracer(hitpos, origin, Flags["BulletTracerColor"], Options["BulletTracerColor"].Transparency, Flags["BulletTracerWidth"], Flags["BulletTracerLifetime"], Flags["BulletTracerTexture"], Flags["BulletTracerTextureLength"], Flags["BulletTracerTextureSpeed"], Flags["BulletTracerFaceCamera"], Flags["BulletTracerLightEmission"], Flags["BulletTracerLightInfluence"], Flags["BulletTracerBrightness"], Flags["BulletTracerSecondBeam"], Flags["BulletTracerSecondBeamColor"], Options["BulletTracerSecondBeamColor"].Transparency)
-                            end
-                        end
-                        if Flags["BulletImpactEnabled"] then
-                            local hitplayer = _GetPlayerFromCharacter(Players, a1.Parent)
-                            local hitpos = RageBot.Target.TargetPosition ~= nil and  RageBot.Target.TargetPosition or Utility.DecryptPosition(a2)
-                            if hitplayer and PlayerModule.storage[hitplayer].enemy then
-                                Utility.CreateImpact(hitpos,a1,Flags["BulletImpactColor2"],Options["BulletImpactColor"].Transparency,Flags["BulletImpactMaterial"],Flags["BulletImpactSize"],Flags["BulletImpactLifetime"])
-                            else
-                                Utility.CreateImpact(hitpos,a1,Flags["BulletImpactColor"],Options["BulletImpactColor"].Transparency,Flags["BulletImpactMaterial"],Flags["BulletImpactSize"],Flags["BulletImpactLifetime"])
-                            end
-                            
-                            
-                        end
-                    end)
-                    if Flags["Damage_Modifier"] then
-                        a7 = Flags["Damage_ModifierValue"]
-                    end
-                end
-                oldNamecall(self, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26)
-                if Flags["Break_Aura"] then
-                    oldNamecall(self, a1, a2, "Multimeter", a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26)
-                end
-                return
-            end
-        elseif method == "FindPartOnRayWithIgnoreList" then 
-            local passed = false
-            for i, v in next, args[2] do
-                if v.ClassName == "Accessory" then
-                    passed = true
-                end
-            end
-            if passed then
-                if Flags["Remove_Spread"] and not _FindFirstChild(Cache.Client.fgun, "Melee") then
-                    args[1] = _RayNew(camera.CFrame.p, camera.CFrame.lookVector * Cache.Client.gun.Range.Value * 0.0625)
-                end
-                local enterParam = _RaycastParamsNew()
-                enterParam.FilterType = Enum.RaycastFilterType.Blacklist
-                enterParam.IgnoreWater = true
-                enterParam.FilterDescendantsInstances = args[2]
-                local resultOfDepressionAndLonliness = workspaceRaycast(workspace, args[1].Origin, args[1].Direction, enterParam)
-                return resultOfDepressionAndLonliness and resultOfDepressionAndLonliness.Instance or nil, resultOfDepressionAndLonliness and resultOfDepressionAndLonliness.Position or (args[1].Origin + args[1].Direction), resultOfDepressionAndLonliness and resultOfDepressionAndLonliness.Normal or _Vector3New(), resultOfDepressionAndLonliness and resultOfDepressionAndLonliness.Material or nil										
-            end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        elseif method == "SetPrimaryPartCFrame" then
-            local arms = args[1]
-            if self.Name == "Arms" and LocalPlayer.Character then
-                if Flags["ViewModel"] then 
-                    arms = arms * _CFrameAngles(_MathRad(Flags["ViewModel_X"]-180), _MathRad(Flags["ViewModel_Y"]-180), _MathRad(Flags["ViewModel_Z"]-180))
-                    arms = arms * _CFrameNew(_Vector3New(_MathRad(Flags["ViewModel_X1"]-180),_MathRad(Flags["ViewModel_Y2"]-180),_MathRad(Flags["ViewModel_Z3"]-180))) 
-                
-                end
-                if Flags["ThirdPerson_RemoveArms"] and Flags["ThirdPerson_Enabled"] then
-                    arms = arms * _CFrameNew(11212121210000, 1001212121200, 1012121212000)
-                end
-                if Flags["RageBot_AtTargets"] and RageBot.Target.TargetPosition then
-                    arms = _CFrameLookAt(arms.Position, RageBot.Target.TargetPosition)
-                end
-
-            end
-            return oldNamecall(self, arms, _Select(2, ...))
-        elseif method == "LoadAnimation" then
-            if Flags["Movement_SlideWalk"] and (args[1].Name == "RunAnim" or args[1].Name == "JumpAnim") then
-                args[1] = fakeanim
-                return oldNamecall(self, _TableUnpack(args))
-            end
-        end
-        return oldNamecall(self, ...)
-    end)
     
     local oldIndex; oldIndex = hookmetamethod(game, "__index", function(self, k)
         if k == "Velocity" and self.Parent == LocalPlayer.Character and Misc.fakehrp then
