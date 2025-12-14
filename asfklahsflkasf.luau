@@ -4988,9 +4988,7 @@ ThemeManager.BuiltInThemes = {
                     local CursorOutline = Drawing.new('Triangle');
                     CursorOutline.Thickness = 1;
                     CursorOutline.Filled = false;
-                    CursorOutline.ZIndex = 2
                     CursorOutline.Color = _Color3New(0, 0, 0);
-                    CursorOutline.Visible = true;
     
                     local BoxFill = Drawing.new("Square")
                     BoxFill.Thickness = 1;
